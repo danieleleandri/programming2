@@ -72,10 +72,7 @@ public class TuringMachine {
 				throw new IllegalStateException("Cannot find an applicable rule; tape contents = " 
 						+ tape.getTapeContents());
 			currentState = applicableRule.newState;
-			
 			tape.setContent(applicableRule.newContent);
-			tape.setState(currentState);
-			
 			if (applicableRule.moveLeft)
 				tape.moveLeft();
 			else

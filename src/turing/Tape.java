@@ -1,81 +1,63 @@
 package turing;
 
-import javax.xml.stream.events.EndDocument;
-
-public class Tape  {
+public class Tape {
 	int state;
-	public static TapeItem startList,endList;
-	public static TapeItem currentState;
+	public static Cell startTape, endTape;
+	public static Cell currentCell;
 
 	public Tape() {
-		currentState = new TapeItem(null,null,1,' ');
-		state = currentState.state;
-		startList = currentState;
-		endList = currentState;
+		currentCell = new Cell(null, null, ' ');
+		startTape = currentCell;
+		endTape = currentCell;
 	}
-	
-	public char getContent() {		
-		return currentState.content;
+
+	public char getContent() {
+		return currentCell.content;
 	}
 
 	public void goToStart() {
-		currentState = startList;
+		currentCell = startTape;
 	}
-	
+
 	public void gotToEnd() {
-		currentState = endList;
+		currentCell = endTape;
 	}
+
 	public String getTapeContents() {
 		String stringContent = "";
-		TapeItem printItem = startList;
+		Cell printItem = startTape;
 		System.out.println();
-		
+
 		while (printItem != null) {
 			stringContent += printItem.content;
 			printItem = printItem.right;
 		}
-		
-		
-		
-//		
-//		boolean cycle = false;
-//		if(printItem.state != -1)  cycle = true;	
-//		while(cycle){
-//			stringContent += printItem.content;
-//			if(printItem.state != -1) {
-//				printItem = printItem.right;	
-//			} else {
-//				cycle = false;
-//			}
-//		}
-		
+
 		return stringContent;
 	}
 
-
-		
-	public void setState(int state) {
-		currentState.setState(state);
-	}
-			
-
 	public void setContent(char newContent) {
-		currentState.setContent(newContent);		
+		currentCell.content = newContent;
 	}
 
 	public void moveLeft() throws IllegalStateException {
-		if (currentState.left == null) throw (new IllegalStateException("The method thrown an IllegalStateExcpetion"));
-		currentState = currentState.left;
-		state = currentState.state;
-	}
-	
-	public void moveRight() {
-		if(currentState.right == null) {
-			currentState.right = new TapeItem (currentState,null,0, ' ' );
-			endList = currentState.right;
+		// if (currentCell.left == null) throw (new IllegalStateException("The method
+		// thrown an IllegalStateExcpetion"));
+		if (currentCell.left == null) {
+			currentCell.left = new Cell(null, currentCell, ' ');
+			(currentCell.left).right = currentCell;
+			startTape = currentCell.left;
 		}
-		currentState = currentState.right;
-		state = currentState.state;
+		currentCell = currentCell.left;
+	}
+
+	public void moveRight() {
+		if (currentCell.right == null) {
+			currentCell.right = new Cell(currentCell, null, ' ');
+			(currentCell.right).left = currentCell;
+			endTape = currentCell.right;
+		}
+		currentCell = currentCell.right;
 	}
 
 }
