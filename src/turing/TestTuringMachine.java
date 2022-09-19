@@ -41,18 +41,16 @@ public class TestTuringMachine {
 			System.out.println(e.getMessage());
 		}
 
-		//String input = "aababbbababbabbaba";  // a string of a's and b's for input to the copy machine
-		String input = "aababbbababbabbaba";
+		String input = "aababbbababbabbaba";  // a string of a's and b's for input to the copy machine
 		Tape tape = new Tape();
 		for (int i = 0; i < input.length(); i++) {
-			tape.setContent(input.charAt(i));			
+			tape.setContent(input.charAt(i));
 			tape.moveRight();
 		}
-
 		tape.moveLeft();  // now, input is written on the tape, with the machine on the rightmost character
 
 		TuringMachine copyMachine = new TuringMachine();  // copies a string of a's and b's;
-		tape.goToStart(); //Aggiunto                      // machine must start on leftmost char in the string		
+		                                                  // machine must start on leftmost char in the string		
 		copyMachine.addRules(new Rule[] {
 				new Rule(0,'a',1,'x',true),  // rules for copying an a
 				new Rule(1,'a',1,'a',true),
@@ -87,7 +85,6 @@ public class TestTuringMachine {
 		});
 		
 		System.out.println("\nRunning machine #3.  Output should be: " + input + " " + input);
-		
 		String copyMachineOutput = copyMachine.run(tape);
 		System.out.println("Actual output is:                      " + copyMachineOutput);
 
