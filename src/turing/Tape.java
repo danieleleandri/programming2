@@ -41,8 +41,6 @@ public class Tape {
 	}
 
 	public void moveLeft() throws IllegalStateException {
-		// if (currentCell.left == null) throw (new IllegalStateException("The method
-		// thrown an IllegalStateExcpetion"));
 		if (currentCell.left == null) {
 			currentCell.left = new Cell(null, currentCell, ' ');
 			(currentCell.left).right = currentCell;
