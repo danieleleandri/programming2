@@ -28,7 +28,8 @@ public class DrawTextItem {
 	private double rotationAngle = 0;
 	private double magnification = 1;
 	private double textTransparency = 0;
-	private double backgroundTransparency = 0;
+	private double backgroundTransparency = 1;
+	
 	
 	/**
 	 * Create a DrawTextItem to draw a specified string.  Initially,
@@ -55,6 +56,10 @@ public class DrawTextItem {
 		string = stringToDraw;
 		this.x = x;
 		this.y = y;
+		//Setting the default FONT, BackGround
+		
+		//background = Color.yellow;
+		
 	}
 	
 	/**
