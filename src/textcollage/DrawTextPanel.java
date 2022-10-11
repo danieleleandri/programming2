@@ -18,10 +18,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JColorChooser;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -49,7 +49,6 @@ public class DrawTextPanel extends JPanel {
     private ArrayList<DrawTextItem> theStrings; // change to an ArrayList<DrawTextItem> !
 
     private Color currentTextColor = Color.BLACK; // Color applied to new strings.
-    private Color currentTextBackGroundColor = Color.BLACK; // Color applied to new strings.
     private double currentTextBackGroundTransparency = 0.0; // Color applied to new strings.
     private Font currentFont = new Font("Arial", Font.PLAIN, 15);
     private double currentRotation = 0.0;
@@ -74,10 +73,13 @@ public class DrawTextPanel extends JPanel {
     private class Canvas extends JPanel {
 
         Canvas() {
-            /* Instante of theStrings */
+            /* Here I made the first modify. I used an ArrayList instead of a single
+             * DrawTextItem */
             theStrings = new ArrayList<DrawTextItem>();
             setPreferredSize(new Dimension(800, 600));
+            /*I initialized the background color to avoid null pointer error*/
             setBackground(Color.LIGHT_GRAY);
+            /*Here I defined the default FONT*/
             setFont(new Font("Serif", Font.BOLD, 24));
         }
 
@@ -85,11 +87,14 @@ public class DrawTextPanel extends JPanel {
             super.paintComponent(g);
             ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
-
+            /*The following cycle paints the string on the canvas*/
             for (DrawTextItem theString : theStrings)
                 if (theString != null)
                     theString.draw(g);
         }
+
+
+        
     }
 
     /**
@@ -229,17 +234,35 @@ public class DrawTextPanel extends JPanel {
             rotate.setAccelerator(KeyStroke.getKeyStroke(commandKey + "r"));
             rotate.addActionListener(menuHandler);
             optionsMenu.add(rotate);
+            
+            JMenuItem gradient = new JMenuItem("Gradient");
+            gradient.setAccelerator(KeyStroke.getKeyStroke(commandKey + "d"));
+            gradient.addActionListener(menuHandler);
+            optionsMenu.add(gradient);
 
         }
         return menuBar;
     }
 
+
     /**
      * Carry out one of the commands from the menu bar.
      * 
      * @param command the text of the menu command.
+     * @throws InterruptedException 
      */
-    private void doMenuCommand(String command) {
+    private void doMenuCommand(String command)  {
+
+         if (command.equals("Gradient")) {
+           double inc = 1/(double)theStrings.size();
+           double i = 0;
+           for (DrawTextItem item : theStrings) {
+            item.setTextTransparency(i);
+            i = i + inc;
+           }
+           canvas.repaint();
+        }
+
         if (command.equals("Make it bigger...")) {
             int inc = 10;
             if ((currentFont.getSize() + inc) <= 200) {
@@ -421,5 +444,7 @@ public class DrawTextPanel extends JPanel {
             }
         }
     }
+
+
 
 }
